@@ -81,7 +81,7 @@ function HeaderBar() {
         left: 250,
         right: 0,
         height: 70,
-        background: "#222",
+        background: "#2FA6DB",
         display: "flex",
         alignItems: "center",
         justifyContent: "flex-end",
@@ -139,7 +139,8 @@ function App() {
 }
 
 function Sidebar({ tab, setTab }) {
-  return (
+  
+  return (  
     <div
       style={{
         position: "fixed",
@@ -147,7 +148,7 @@ function Sidebar({ tab, setTab }) {
         top: 0,
         bottom: 0,
         width: 250,
-        background: "#25472f",
+        background: "#0E2A47",
         color: "#fff",
         fontFamily: "Montserrat, sans-serif",
         zIndex: 200,
@@ -161,7 +162,7 @@ function Sidebar({ tab, setTab }) {
           letterSpacing: "2px",
         }}
       >
-        JMTC
+        <img src="jmtc.png" alt="company logo"/>
       </div>
       <div
         style={{
@@ -170,7 +171,7 @@ function Sidebar({ tab, setTab }) {
           display: "flex",
           alignItems: "center",
           cursor: "pointer",
-          background: tab === "reservations" ? "#3b5d3a" : "transparent",
+          background: tab === "reservations" ? "#FF9E0C" : "transparent",
         }}
         onClick={() => setTab("reservations")}
       >
@@ -184,7 +185,7 @@ function Sidebar({ tab, setTab }) {
           display: "flex",
           alignItems: "center",
           cursor: "pointer",
-          background: tab === "vehicles" ? "#3b5d3a" : "transparent",
+          background: tab === "vehicles" ? "#FF9E0C" : "transparent",
         }}
         onClick={() => setTab("vehicles")}
       >
@@ -257,7 +258,7 @@ function Reservations() {
         <button
           onClick={() => setShowForm(true)}
           style={{
-            background: "#355a43",
+            background: "#2FA6DB",
             color: "#fff",
             padding: "8px 16px",
             borderRadius: 4,
@@ -332,7 +333,7 @@ function Reservations() {
         <button
           onClick={() => setSearchFilters(filters)}
           style={{
-            background: "#355a43",
+            background: "#2FA6DB",
             color: "#fff",
             padding: "8px 16px",
             borderRadius: 4,
@@ -524,7 +525,7 @@ function ReservationForm({ onClose, onSubmit }) {
             <button
               onClick={handleSubmit}
               style={{
-                background: "#28a745",
+                background: "#FF9E0C",
                 color: "#fff",
                 border: "none",
                 padding: "8px 16px",
