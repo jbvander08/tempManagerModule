@@ -138,9 +138,13 @@ function App() {
   );
 }
 
+
 function Sidebar({ tab, setTab }) {
-  
-  return (  
+
+  const rootDiv = document.getElementById('root');
+
+  return (
+    
     <div
       style={{
         position: "fixed",
@@ -163,6 +167,7 @@ function Sidebar({ tab, setTab }) {
         }}
       >
         <img src="jmtc.png" alt="company logo"/>
+      
       </div>
       <div
         style={{
@@ -218,227 +223,126 @@ function Reservations() {
     status: "",
   });
   const [searchFilters, setSearchFilters] = useState(filters);
-  const [selected, setSelected] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [tab, setTab] = useState("list");
   const [formData, setFormData] = useState({});
-  const [showSummary, setShowSummary] = useState(false);
-  const [showAdded, setShowAdded] = useState(false);
 
-  // Filtering only happens after clicking "Search"
+  // Filter logic
   const filtered = reservations.filter(
     (r) =>
       (!searchFilters.name ||
         r.name.toLowerCase().includes(searchFilters.name.toLowerCase())) &&
       (!searchFilters.contact || r.contact.includes(searchFilters.contact)) &&
       (!searchFilters.destination ||
-        r.destination.toLowerCase() ===
-          searchFilters.destination.toLowerCase()) &&
+        r.destination.toLowerCase() === searchFilters.destination.toLowerCase()) &&
       (!searchFilters.status || r.status === searchFilters.status)
   );
 
-  // Status color
-  const statusColor = (status) =>
-    ({
-      Upcoming: "#1976d2",
-      Ongoing: "#e6b800",
-      Completed: "#2e7d32",
-    }[status] || "#888");
+  // Add reservation
+  const handleAddReservation = (data) => {
+    setReservations([
+      ...reservations,
+      { ...data, id: reservations.length + 1, status: "Upcoming" },
+    ]);
+    setTab("list");
+  };
 
   return (
-    <div style={{ padding: 32 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 24,
-        }}
-      >
-        <h2>Reservation List</h2>
+    <div className="page-container">
+      {/* Tabs */}
+      <div className="reservations-tabs">
         <button
-          onClick={() => setShowForm(true)}
-          style={{
-            background: "#2FA6DB",
-            color: "#fff",
-            padding: "8px 16px",
-            borderRadius: 4,
-            border: "none",
-            fontWeight: 600,
-            fontFamily: "Montserrat, sans-serif",
-            cursor: "pointer",
-          }}
+          className={`reservations-tab ${tab === "list" ? "active" : ""}`}
+          onClick={() => setTab("list")}
         >
-          + Add Reservation
+          Reservation List
+        </button>
+        <button
+          className={`reservations-tab ${tab === "create" ? "active" : ""}`}
+          onClick={() => setTab("create")}
+        >
+          Create Reservation
         </button>
       </div>
-      <div style={{ marginBottom: 16, display: "flex", gap: 8 }}>
-        <input
-          placeholder="Filter customer name"
-          value={filters.name}
-          onChange={(e) => setFilters({ ...filters, name: e.target.value })}
-          style={{
-            flex: 1,
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        />
-        <input
-          placeholder="Filter contact number"
-          value={filters.contact}
-          onChange={(e) => setFilters({ ...filters, contact: e.target.value })}
-          style={{
-            flex: 1,
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        />
-        <select
-          value={filters.destination}
-          onChange={(e) =>
-            setFilters({ ...filters, destination: e.target.value })
-          }
-          style={{
-            flex: 1,
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">Filter destination</option>
-          <option value="Baguio">Baguio</option>
-          <option value="Pampanga">Pampanga</option>
-          <option value="Manila">Manila</option>
-        </select>
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          style={{
-            flex: 1,
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">All Statuses</option>
-          <option value="Upcoming">Upcoming</option>
-          <option value="Ongoing">Ongoing</option>
-          <option value="Completed">Completed</option>
-        </select>
-        <button
-          onClick={() => setSearchFilters(filters)}
-          style={{
-            background: "#2FA6DB",
-            color: "#fff",
-            padding: "8px 16px",
-            borderRadius: 4,
-            border: "none",
-            fontWeight: 600,
-            fontFamily: "Montserrat, sans-serif",
-            cursor: "pointer",
-          }}
-        >
-          Search
-        </button>
-      </div>
-      <table
-        style={{
-          width: "100%",
-          background: "#fff",
-          borderRadius: 8,
-          overflow: "hidden",
-          borderCollapse: "collapse",
-          fontFamily: "Montserrat, sans-serif",
-        }}
-      >
-        <thead>
-          <tr style={{ background: "#f5f5f5" }}>
-            <th style={{ padding: "12px", textAlign: "left" }}></th>
-            <th style={{ padding: "12px", textAlign: "left" }}>
-              Customer Name
-            </th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Contact</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Destination</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Date/Time</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((r) => (
-            <tr key={r.id} style={{ borderTop: "1px solid #eee" }}>
-              <td style={{ padding: "12px" }}>
-                <input
-                  type="checkbox"
-                  checked={selected.includes(r.id)}
-                  onChange={(e) => {
-                    setSelected(
-                      e.target.checked
-                        ? [...selected, r.id]
-                        : selected.filter((id) => id !== r.id)
-                    );
-                  }}
-                />
-              </td>
-              <td style={{ padding: "12px" }}>{r.name}</td>
-              <td style={{ padding: "12px" }}>{r.contact}</td>
-              <td style={{ padding: "12px" }}>{r.destination}</td>
-              <td style={{ padding: "12px" }}>
-                {r.date} <br /> {r.time}
-              </td>
-              <td style={{ padding: "12px" }}>
-                <span
-                  style={{
-                    display: "inline-block",
-                    width: 12,
-                    height: 12,
-                    borderRadius: "50%",
-                    background: statusColor(r.status),
-                    marginRight: 8,
-                    verticalAlign: "middle",
-                  }}
-                ></span>
-                {r.status}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {showForm && (
-        <ReservationForm
-          onClose={() => setShowForm(false)}
-          onSubmit={(data) => {
-            setFormData(data);
-            setShowForm(false);
-            setShowSummary(true);
-          }}
-        />
+
+      {/* Content */}
+      {tab === "list" ? (
+        <div className="module-card">
+          <h2 className="module-title">Reservation List</h2>
+          <div className="filter-row">
+            <input
+              placeholder="Customer name"
+              value={filters.name}
+              onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+            />
+            <input
+              placeholder="Contact number"
+              value={filters.contact}
+              onChange={(e) => setFilters({ ...filters, contact: e.target.value })}
+            />
+            <select
+              value={filters.destination}
+              onChange={(e) =>
+                setFilters({ ...filters, destination: e.target.value })
+              }
+            >
+              <option value="">Destination</option>
+              <option value="Baguio">Baguio</option>
+              <option value="Pampanga">Pampanga</option>
+              <option value="Manila">Manila</option>
+            </select>
+            <select
+              value={filters.status}
+              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            >
+              <option value="">Status</option>
+              <option value="Upcoming">Upcoming</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+            </select>
+            <button className="btn-primary" onClick={() => setSearchFilters(filters)}>
+              Search
+            </button>
+          </div>
+
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Contact</th>
+                <th>Destination</th>
+                <th>Date/Time</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((r) => (
+                <tr key={r.id}>
+                  <td>{r.name}</td>
+                  <td>{r.contact}</td>
+                  <td>{r.destination}</td>
+                  <td>
+                    {r.date} <br />
+                    {r.time}
+                  </td>
+                  <td>{r.status}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="module-card">
+          <h2 className="module-title">Create Reservation</h2>
+          <ReservationForm onSubmit={handleAddReservation} onClose={() => setTab("list")} />
+        </div>
       )}
-      {showSummary && (
-        <ReservationSummary
-          data={formData}
-          onClose={() => setShowSummary(false)}
-          onConfirm={() => {
-            setReservations([
-              ...reservations,
-              { ...formData, id: reservations.length + 1, status: "Upcoming" },
-            ]);
-            setShowSummary(false);
-            setShowAdded(true);
-          }}
-        />
-      )}
-      {showAdded && <ReservationAdded onClose={() => setShowAdded(false)} />}
     </div>
   );
 }
 
+
 // Updated Reservation creation form
-function ReservationForm({ onClose, onSubmit }) {
+function ReservationForm({ onSubmit, onClose }) {
   const [data, setData] = useState({
     name: "",
     contact: "",
@@ -451,422 +355,90 @@ function ReservationForm({ onClose, onSubmit }) {
   });
 
   const handleSubmit = () => {
-    if (
-      data.name &&
-      data.contact &&
-      data.destination &&
-      data.startDate &&
-      data.plateNumber
-    ) {
-      onSubmit({
-        ...data,
-        date: data.startDate,
-        plate: data.plateNumber,
-      });
-    } else {
+    if (!data.name || !data.contact || !data.destination || !data.startDate) {
       alert("Please fill in all required fields");
+      return;
     }
+    onSubmit(data);
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(0,0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1000,
-        fontFamily: "Montserrat, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          background: "#fff",
-          borderRadius: 8,
-          width: "800px",
-          maxWidth: "95vw",
-          maxHeight: "95vh",
-          overflow: "auto",
-          position: "relative",
-        }}
-      >
-        {/* Header */}
-        <div
-          style={{
-            background: "#f8f9fa",
-            padding: "16px 24px",
-            borderBottom: "1px solid #e9ecef",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              gap: "24px",
-              alignItems: "center",
-            }}
-          >
-            <h3
-              style={{
-                margin: 0,
-                fontSize: "18px",
-                fontWeight: "600",
-              }}
-            >
-              Create Reservation
-            </h3>
-            <button
-              onClick={handleSubmit}
-              style={{
-                background: "#FF9E0C",
-                color: "#fff",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: 4,
-                fontSize: "14px",
-                fontWeight: "500",
-                cursor: "pointer",
-              }}
-            >
-              + Add Reservation
-            </button>
-          </div>
-          <button
-            style={{
-              background: "none",
-              border: "none",
-              fontSize: "24px",
-              cursor: "pointer",
-              color: "#666",
-            }}
-            onClick={onClose}
-          >
-            ×
-          </button>
+    <div className="form-grid">
+      <div>
+        <div className="form-group">
+          <label>Customer Name</label>
+          <input
+            value={data.name}
+            onChange={(e) => setData({ ...data, name: e.target.value })}
+          />
         </div>
-
-        {/* Form Content */}
-        <div
-          style={{
-            padding: "24px",
-            display: "flex",
-            gap: "24px",
-          }}
-        >
-          {/* Customer Information */}
-          <div style={{ flex: 1 }}>
-            <h4
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                marginBottom: "20px",
-                color: "#333",
-              }}
-            >
-              Customer Information
-            </h4>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                value={data.name}
-                onChange={(e) => setData({ ...data, name: e.target.value })}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: 6,
-                  fontSize: "14px",
-                  fontFamily: "Montserrat, sans-serif",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Contact Number
-              </label>
-              <div style={{ display: "flex", gap: "3px", flexWrap: "wrap" }}>
-                {Array.from({ length: 11 }, (_, i) => (
-                  <input
-                    key={i}
-                    type="text"
-                    maxLength="1"
-                    value={data.contact[i] || ""}
-                    onChange={(e) => {
-                      const newContact = data.contact.split("");
-                      newContact[i] = e.target.value;
-                      setData({ ...data, contact: newContact.join("") });
-                    }}
-                    style={{
-                      width: "28px",
-                      height: "35px",
-                      padding: "6px",
-                      border: "1px solid #ddd",
-                      borderRadius: 4,
-                      textAlign: "center",
-                      fontSize: "13px",
-                      fontFamily: "Montserrat, sans-serif",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Destination
-              </label>
-              <select
-                value={data.destination}
-                onChange={(e) =>
-                  setData({ ...data, destination: e.target.value })
-                }
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: 6,
-                  fontSize: "14px",
-                  fontFamily: "Montserrat, sans-serif",
-                  background: "#fff",
-                  boxSizing: "border-box",
-                }}
-              >
-                <option value="">Select destination</option>
-                <option value="Baguio">Baguio</option>
-                <option value="Pampanga">Pampanga</option>
-                <option value="Manila">Manila</option>
-              </select>
-            </div>
-
-            <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
-              <div style={{ flex: 1 }}>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    marginBottom: "6px",
-                    color: "#333",
-                  }}
-                >
-                  Start Date
-                </label>
-                <input
-                  type="text"
-                  placeholder="07/25/25"
-                  value={data.startDate}
-                  onChange={(e) =>
-                    setData({ ...data, startDate: e.target.value })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: 6,
-                    fontSize: "14px",
-                    fontFamily: "Montserrat, sans-serif",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    marginBottom: "6px",
-                    color: "#333",
-                  }}
-                >
-                  Finish Date
-                </label>
-                <input
-                  type="text"
-                  placeholder="07/26/25"
-                  value={data.finishDate}
-                  onChange={(e) =>
-                    setData({ ...data, finishDate: e.target.value })
-                  }
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    border: "1px solid #ddd",
-                    borderRadius: 6,
-                    fontSize: "14px",
-                    fontFamily: "Montserrat, sans-serif",
-                    boxSizing: "border-box",
-                  }}
-                />
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Time
-              </label>
-              <select
-                value={data.time}
-                onChange={(e) => setData({ ...data, time: e.target.value })}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: 6,
-                  fontSize: "14px",
-                  fontFamily: "Montserrat, sans-serif",
-                  background: "#fff",
-                  boxSizing: "border-box",
-                }}
-              >
-                <option value="9:00 AM">9:00 AM</option>
-                <option value="10:00 AM">10:00 AM</option>
-                <option value="11:00 AM">11:00 AM</option>
-                <option value="12:00 PM">12:00 PM</option>
-                <option value="1:00 PM">1:00 PM</option>
-                <option value="2:00 PM">2:00 PM</option>
-                <option value="3:00 PM">3:00 PM</option>
-                <option value="4:00 PM">4:00 PM</option>
-                <option value="5:00 PM">5:00 PM</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Vehicle Information */}
-          <div style={{ flex: 1 }}>
-            <h4
-              style={{
-                fontSize: "16px",
-                fontWeight: "600",
-                marginBottom: "20px",
-                color: "#333",
-              }}
-            >
-              Vehicle Information
-            </h4>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Plate Number
-              </label>
-              <div style={{ display: "flex", gap: "3px" }}>
-                {Array.from({ length: 7 }, (_, i) => (
-                  <input
-                    key={i}
-                    type="text"
-                    maxLength="1"
-                    value={data.plateNumber[i] || ""}
-                    onChange={(e) => {
-                      const newPlate = data.plateNumber.split("");
-                      newPlate[i] = e.target.value.toUpperCase();
-                      setData({ ...data, plateNumber: newPlate.join("") });
-                    }}
-                    style={{
-                      width: "35px",
-                      height: "35px",
-                      padding: "6px",
-                      border: "1px solid #ddd",
-                      borderRadius: 4,
-                      textAlign: "center",
-                      fontSize: "13px",
-                      fontFamily: "Montserrat, sans-serif",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div style={{ marginBottom: "16px" }}>
-              <label
-                style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "500",
-                  marginBottom: "6px",
-                  color: "#333",
-                }}
-              >
-                Type
-              </label>
-              <select
-                value={data.type}
-                onChange={(e) => setData({ ...data, type: e.target.value })}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: 6,
-                  fontSize: "14px",
-                  fontFamily: "Montserrat, sans-serif",
-                  background: "#fff",
-                  boxSizing: "border-box",
-                }}
-              >
-                <option value="SUV">SUV</option>
-                <option value="Van">Van</option>
-                <option value="Sedan">Sedan</option>
-                <option value="Truck">Truck</option>
-              </select>
-            </div>
-          </div>
+        <div className="form-group">
+          <label>Contact Number</label>
+          <input
+            value={data.contact}
+            onChange={(e) => setData({ ...data, contact: e.target.value })}
+          />
         </div>
+        <div className="form-group">
+          <label>Destination</label>
+          <select
+            value={data.destination}
+            onChange={(e) => setData({ ...data, destination: e.target.value })}
+          >
+            <option value="">Select</option>
+            <option value="Baguio">Baguio</option>
+            <option value="Pampanga">Pampanga</option>
+            <option value="Manila">Manila</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div className="form-group">
+          <label>Start Date</label>
+          <input
+            type="date"
+            value={data.startDate}
+            onChange={(e) => setData({ ...data, startDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Finish Date</label>
+          <input
+            type="date"
+            value={data.finishDate}
+            onChange={(e) => setData({ ...data, finishDate: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label>Vehicle Type</label>
+          <select
+            value={data.type}
+            onChange={(e) => setData({ ...data, type: e.target.value })}
+          >
+            <option value="SUV">SUV</option>
+            <option value="Van">Van</option>
+            <option value="Sedan">Sedan</option>
+          </select>
+        </div>
+      </div>
+
+      <div style={{ gridColumn: "1 / -1", textAlign: "right" }}>
+        <button className="btn-primary" onClick={handleSubmit}>
+          Save Reservation
+        </button>
+        <button
+          style={{ marginLeft: "10px", background: "#aaa", color: "#fff" }}
+          className="btn-primary"
+          onClick={onClose}
+        >
+          Cancel
+        </button>
       </div>
     </div>
   );
 }
+
 
 // Reservation summary modal
 function ReservationSummary({ data, onClose, onConfirm }) {
@@ -1066,209 +638,163 @@ function Vehicles() {
       (filters.archived === "" || v.archived === (filters.archived === "true"))
   );
 
-  // Archive selected vehicles
-  const handleArchiveVehicles = () => {
+  // Archive / Unarchive
+  const handleArchiveVehicles = (archive = true) => {
     if (selectedVehicles.length === 0) {
-      alert("Please select vehicles to archive");
+      alert(`Please select vehicles to ${archive ? "archive" : "unarchive"}`);
       return;
     }
 
-    const updatedVehicles = vehicles.map((vehicle) =>
-      selectedVehicles.includes(vehicle.id)
-        ? { ...vehicle, archived: true }
-        : vehicle
+    const updated = vehicles.map((v) =>
+      selectedVehicles.includes(v.id) ? { ...v, archived: archive } : v
     );
-
-    setVehicles(updatedVehicles);
+    setVehicles(updated);
     setSelectedVehicles([]);
-    alert(`${selectedVehicles.length} vehicle(s) archived successfully`);
+    alert(
+      `${selectedVehicles.length} vehicle(s) ${
+        archive ? "archived" : "unarchived"
+      } successfully`
+    );
   };
 
-  // Unarchive selected vehicles
-  const handleUnarchiveVehicles = () => {
-    if (selectedVehicles.length === 0) {
-      alert("Please select vehicles to unarchive");
-      return;
-    }
-
-    const updatedVehicles = vehicles.map((vehicle) =>
-      selectedVehicles.includes(vehicle.id)
-        ? { ...vehicle, archived: false }
-        : vehicle
+  // Toggle selection
+  const toggleSelect = (id) => {
+    setSelectedVehicles((prev) =>
+      prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
     );
-
-    setVehicles(updatedVehicles);
-    setSelectedVehicles([]);
-    alert(`${selectedVehicles.length} vehicle(s) unarchived successfully`);
   };
+
+  // Status color indicator
+  const statusColor = (status) =>
+    ({
+      "Inactive": "#b71c1c",
+      "In Shop": "#e6b800", 
+      "Active": "#2e7d32", 
+    }[status] || "#888");
 
   return (
-    <div style={{ padding: 32, fontFamily: "Montserrat, sans-serif" }}>
-      <h2 style={{ marginBottom: 24 }}>Vehicle List</h2>
-      <div
-        style={{
-          marginBottom: 16,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
-        <input
-          placeholder="Search names, VINs, an..."
-          style={{
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        />
-        <select
-          value={filters.type}
-          onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-          style={{
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">All Types</option>
-          <option value="SUV">SUV</option>
-          <option value="Van">Van</option>
-        </select>
-        <select
-          value={filters.group}
-          onChange={(e) => setFilters({ ...filters, group: e.target.value })}
-          style={{
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">All Groups</option>
-          <option value="Company">Company</option>
-          <option value="Public works">Public works</option>
-        </select>
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          style={{
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">All Statuses</option>
-          <option value="Inactive">Inactive</option>
-          <option value="In Shop">In Shop</option>
-        </select>
-        <select
-          value={filters.archived}
-          onChange={(e) => setFilters({ ...filters, archived: e.target.value })}
-          style={{
-            padding: "8px",
-            borderRadius: 4,
-            border: "1px solid #ccc",
-            fontFamily: "Montserrat, sans-serif",
-          }}
-        >
-          <option value="">All</option>
-          <option value="false">Active</option>
-          <option value="true">Archived</option>
-        </select>
-        <button
-          onClick={handleArchiveVehicles}
-          disabled={selectedVehicles.length === 0}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition 
-    ${
-      selectedVehicles.length === 0
-        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-        : "bg-red-600 text-white hover:bg-red-700"
-    }`}
-        >
-          📦 Archive ({selectedVehicles.length})
-        </button>
+    <div className="page-container">
+      {/* Filter Module */}
+      <div className="module-card">
+        <h2 className="module-title">Vehicle Filters</h2>
+        <div className="filter-row">
+          <select
+            value={filters.type}
+            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+          >
+            <option value="">All Types</option>
+            <option value="SUV">SUV</option>
+            <option value="Van">Van</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Truck">Truck</option>
+          </select>
 
-        <button
-          onClick={handleUnarchiveVehicles}
-          disabled={selectedVehicles.length === 0}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition 
-    ${
-      selectedVehicles.length === 0
-        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-        : "bg-green-600 text-white hover:bg-green-700"
-    }`}
-        >
-          📂 Unarchive ({selectedVehicles.length})
-        </button>
+          <select
+            value={filters.group}
+            onChange={(e) => setFilters({ ...filters, group: e.target.value })}
+          >
+            <option value="">All Groups</option>
+            <option value="Company">Company</option>
+            <option value="Public works">Public works</option>
+          </select>
+
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">All Statuses</option>
+            <option value="Inactive">Inactive</option>
+            <option value="In Shop">In Shop</option>
+            <option value="Active">Active</option>
+          </select>
+
+          <select
+            value={filters.archived}
+            onChange={(e) =>
+              setFilters({ ...filters, archived: e.target.value })
+            }
+          >
+            <option value="">All</option>
+            <option value="false">Active</option>
+            <option value="true">Archived</option>
+          </select>
+
+          <button
+            className={`btn-danger ${
+              selectedVehicles.length === 0 ? "disabled" : ""
+            }`}
+            onClick={() => handleArchiveVehicles(true)}
+            disabled={selectedVehicles.length === 0}
+          >
+            📦 Archive ({selectedVehicles.length})
+          </button>
+
+          <button
+            className={`btn-success ${
+              selectedVehicles.length === 0 ? "disabled" : ""
+            }`}
+            onClick={() => handleArchiveVehicles(false)}
+            disabled={selectedVehicles.length === 0}
+          >
+            📂 Unarchive ({selectedVehicles.length})
+          </button>
+        </div>
       </div>
-      <table
-        style={{
-          width: "100%",
-          background: "#fff",
-          borderRadius: 8,
-          overflow: "hidden",
-          borderCollapse: "collapse",
-          fontFamily: "Montserrat, sans-serif",
-        }}
-      >
-        <thead>
-          <tr style={{ background: "#f5f5f5" }}>
-            <th style={{ padding: "12px", textAlign: "left" }}></th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Name</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Status</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Type</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>Group</th>
-            <th style={{ padding: "12px", textAlign: "left" }}>
-              Current Meter
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map((v) => (
-            <tr
-              key={v.id}
-              style={{
-                borderTop: "1px solid #eee",
-                backgroundColor: v.archived ? "#f8f9fa" : "transparent",
-                opacity: v.archived ? 0.7 : 1,
-              }}
-            >
-              <td style={{ padding: "12px" }}>
-                <input
-                  type="checkbox"
-                  checked={selectedVehicles.includes(v.id)}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedVehicles([...selectedVehicles, v.id]);
-                    } else {
-                      setSelectedVehicles(
-                        selectedVehicles.filter((id) => id !== v.id)
-                      );
-                    }
-                  }}
-                />
-              </td>
-              <td style={{ padding: "12px" }}>
-                {v.name}{" "}
-                {v.archived && (
-                  <span style={{ color: "#6c757d", fontSize: "12px" }}>
-                    (Archived)
-                  </span>
-                )}
-              </td>
-              <td style={{ padding: "12px" }}>{v.status}</td>
-              <td style={{ padding: "12px" }}>{v.type}</td>
-              <td style={{ padding: "12px" }}>{v.group}</td>
-              <td style={{ padding: "12px" }}>{v.meter}</td>
+
+      {/* Vehicle List Module */}
+      <div className="module-card">
+        <h2 className="module-title">Vehicle List</h2>
+        <table className="styled-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Vehicle Name</th>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Group</th>
+              <th>Meter Reading</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filtered.map((v) => (
+              <tr
+                key={v.id}
+                className={v.archived ? "archived-row" : ""}
+                onClick={() => toggleSelect(v.id)}
+              >
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedVehicles.includes(v.id)}
+                    onChange={() => toggleSelect(v.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </td>
+                <td>
+                  {v.name}{" "}
+                  {v.archived && (
+                    <span className="archived-label">(Archived)</span>
+                  )}
+                </td>
+                <td>
+                  <span
+                    className="status-circle"
+                    style={{ background: statusColor(v.status) }}
+                  ></span>
+                  {v.status}
+                </td>
+                <td>{v.type}</td>
+                <td>{v.group}</td>
+                <td>{v.meter}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
+
+
 
 export default App;

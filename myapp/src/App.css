@@ -62,3 +62,225 @@ html,
   color: #666;
   cursor: pointer;
 }
+
+.page-container {
+  padding: 32px;
+  background: #f2f4f7;
+  min-height: calc(100vh - 70px);
+}
+
+/* Tabs */
+.reservations-tabs {
+  display: flex;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.reservations-tab {
+  flex: 1;
+  padding: 14px 0;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  background: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  color: #777;
+  transition: 0.2s;
+}
+
+.reservations-tab.active {
+  color: #0e24a7;
+  background: #e9f2ff;
+  border-bottom: 3px solid #0e24a7;
+}
+
+/* Card */
+.module-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.module-title {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Filter Row */
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.filter-row input,
+.filter-row select {
+  flex: 1;
+  min-width: 180px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.btn-primary {
+  background: #0e24a7;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-primary:hover {
+  background: #08176b;
+}
+
+/* Table */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-family: "Montserrat", sans-serif;
+}
+
+.styled-table th {
+  background: #f8f9fa;
+  text-align: left;
+  padding: 12px;
+  color: #444;
+  font-weight: 600;
+}
+
+.styled-table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+/* Form inside card */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* VEHICLES TAB MODULE STYLING */
+
+.btn-success,
+.btn-danger {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-success {
+  background: #2e7d32;
+}
+.btn-success:hover {
+  background: #256b28;
+}
+
+.btn-danger {
+  background: #d32f2f;
+}
+.btn-danger:hover {
+  background: #b71c1c;
+}
+
+.btn-success.disabled,
+.btn-danger.disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+}
+
+.archived-row {
+  background: #f8f9fa !important;
+  opacity: 0.7;
+}
+
+.archived-label {
+  color: #888;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+/* Table hover effect */
+.styled-table tbody tr:hover {
+  background: #f5f8ff;
+  cursor: pointer;
+}
+
+/* VEHICLES TAB: MODULAR LAYOUT IMPROVEMENTS */
+
+.status-circle {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.module-card + .module-card {
+  margin-top: 24px; /* space between the two cards */
+}
+
+.archived-row {
+  background: #f9f9f9 !important;
+  opacity: 0.7;
+}
+
+.archived-label {
+  color: #888;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.styled-table tbody tr:hover {
+  background: #f5f8ff;
+  cursor: pointer;
+}
+
+/* Make filters grid-like when space allows */
+@media (min-width: 768px) {
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    align-items: center;
+  }
+}
+
