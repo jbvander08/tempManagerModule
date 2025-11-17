@@ -1,0 +1,148 @@
+.page-container {
+  padding: 30px;
+  background: #f2f4f7;
+  min-height: 100vh;
+  font-family: "Montserrat", sans-serif;
+  margin-left: 230px;
+  margin-top: 70px;
+}
+
+/* Summary cards container */
+.summary-area {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+/* Module card */
+.module-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.08);
+}
+
+.module-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+/* Tabs */
+.reservations-tabs {
+  display: flex;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 25px;
+  box-shadow: 0px 3px 8px rgba(0,0,0,0.07);
+}
+
+.reservations-tab {
+  flex: 1;
+  padding: 14px 0;
+  font-weight: 600;
+  color: #777;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: .2s;
+  text-align: center;
+}
+
+.reservations-tab.active {
+  background: #e9f1ff;
+  color: #0f3be5;
+  border-bottom: 3px solid #0f3be5;
+}
+
+/* Form & table styles */
+.form-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2,1fr);
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 9px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+}
+
+.error-text {
+  font-size: 12px;
+  color: #d32f2f;
+  margin-top: 3px;
+}
+
+/* Actions */
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-small, .btn-danger-small {
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  background: #0f3be5;
+  color: white;
+  padding: 8px 14px;
+}
+
+.btn-secondary {
+  background: #777;
+  color: white;
+  padding: 8px 14px;
+}
+
+.btn-small {
+  background: #0f3be5;
+  color:white;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.btn-danger-small {
+  background: #c62828;
+  color:white;
+  padding:4px 8px;
+  font-size:12px;
+  margin-left: 5px;
+}
+
+/* Table */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.styled-table thead {
+  background: #f8f9fa;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px;
+  border-top: 1px solid #eee;
+}
+
+.styled-table tbody tr:hover {
+  background: #eef6ff;
+}
