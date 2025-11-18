@@ -89,3 +89,114 @@
   margin-left: 5px;
   cursor: pointer;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .page-container {
+    margin-left: 70px;
+    margin-top: 60px;
+    padding: 20px;
+  }
+
+  .summary-area {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .module-card {
+    padding: 18px;
+  }
+
+  .module-title {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+  }
+
+  .filter-row {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .filter-row select {
+    padding: 6px;
+    font-size: 0.9rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .page-container {
+    margin-left: 60px;
+    margin-top: 60px;
+    padding: 12px;
+  }
+
+  .summary-area {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .module-card {
+    padding: 12px;
+  }
+
+  .module-title {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .filter-row {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .filter-row select {
+    padding: 5px;
+    font-size: 0.8rem;
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .styled-table {
+    font-size: 0.75rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 5px;
+  }
+
+  .btn-primary {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
+  .btn-edit,
+  .btn-delete {
+    padding: 2px 4px;
+    font-size: 9px;
+    margin-left: 2px;
+  }
+}

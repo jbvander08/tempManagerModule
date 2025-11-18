@@ -146,3 +146,119 @@
 .styled-table tbody tr:hover {
   background: #eef6ff;
 }
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet (768px and below) */
+@media (max-width: 768px) {
+  .page-container {
+    margin-left: 70px;
+    margin-top: 60px;
+    padding: 20px;
+  }
+
+  .summary-area {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .module-card {
+    padding: 18px;
+  }
+
+  .module-title {
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    grid-column: span 1;
+  }
+
+  .reservations-tab {
+    padding: 10px 0;
+    font-size: 0.85rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .btn-small,
+  .btn-danger-small {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+
+  .btn-small {
+    margin-bottom: 4px;
+  }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+  .page-container {
+    margin-left: 60px;
+    margin-top: 60px;
+    padding: 12px;
+  }
+
+  .summary-area {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .module-card {
+    padding: 12px;
+  }
+
+  .module-title {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+
+  .reservations-tabs {
+    margin-bottom: 15px;
+  }
+
+  .reservations-tab {
+    padding: 8px 0;
+    font-size: 0.75rem;
+  }
+
+  .styled-table {
+    font-size: 0.8rem;
+  }
+
+  .styled-table th,
+  .styled-table td {
+    padding: 6px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .btn-small,
+  .btn-danger-small {
+    padding: 2px 4px;
+    font-size: 9px;
+    margin-left: 2px;
+  }
+}
